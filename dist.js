@@ -10,7 +10,7 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (array, opts) {
+var bin = function(array, opts) {
   var _opts$binCount = opts.binCount;
   var binCount = _opts$binCount === undefined ? 10 : _opts$binCount;
 
@@ -74,19 +74,20 @@ function createBins(bins, binSize, min) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = hist;
+
 
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _bin = require('./bin');
+// var _bin = require('./bin');
+var _bin = bin;
 
 var _bin2 = _interopRequireDefault(_bin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function hist(array, opts) {
+var hist = function(array, opts) {
   var bins = (0, _bin2.default)(array, opts);
   var maxCount = _lodash2.default.reduce(bins, function (max, bin) {
     return bin.count > max ? bin.count : max;
@@ -132,3 +133,5 @@ function repeat(char, count) {
 function countDigits(num) {
   return String(num).length;
 }
+
+exports.default = hist;
