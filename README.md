@@ -21,7 +21,10 @@ Will log to the console:
 
 You will need the `gulp` cli: `npm install --global gulp-cli`
 
-The easiest way to dig in is to run the only gulp task so far, `gulp hist`, which takes two optional args:
-`--array` and `--binCount`
+The easiest way to dig in is to run the only gulp task so far, `gulp hist`, which takes two optional args: 
+
+`--array` and `--binCount`.
+
 So for instance:
+
 `gulp hist --array=[1,1,1] --binCount=2`
