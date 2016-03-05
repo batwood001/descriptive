@@ -1,9 +1,10 @@
 import _ from 'lodash';
 
 export default (array, opts) => {
-  const {
-    binCount = 10
+  let {
+    binCount = 10 // fix babel to default
   } = opts;
+  binCount = binCount ? binCount : 10
 
   if (binCount === 0) {
     throw new Error('Must have at least one bin')

@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import bin from './bin';
+import bin from '../utils/bin';
 
-export default function hist(array, opts) {
+export default (array, opts) => {
   const bins = bin(array, opts);
   const maxCount = _.reduce(bins, (max, bin) => {
     return bin.count > max ? bin.count : max
