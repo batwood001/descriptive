@@ -28,10 +28,87 @@ describe('bin', () => {
       const fn = () => {
         return bin([], {binCount: invalidBin});
       }
-      it(`should throw an error if invalid (${invalidBin})`, () => {
+      it(`should throw an error if it is an invalid type or number (${invalidBin})`, () => {
         assert.throws(fn, Error);
       })
     })
+
+    it('should throw an error if it is > array.length', () => {
+      const fn = () => {
+        return bin([1,2,3], {binCount: 4});
+      }
+      assert.throws(fn, Error)
+    })
+
   });
+
+  describe('the bins', () => {
+    const tests = [
+      {
+        inputs: {
+          array: [1,2,3],
+          binCount: 1
+        },
+        output: [
+          {
+            low: 1,
+            high: 3,
+            count: 3            
+          }
+        ]
+      },
+      {
+        inputs: {
+          array: [1,2,3],
+          binCount: 2 
+        },
+        output: [
+          {
+            low: 1,
+            high: 2,
+            count: 2
+          },
+          {
+            low: 2,
+            high: 3,
+            count: 1
+          }
+        ]
+      },
+      {
+        inputs: {
+          array: [1,2,3],
+          binCount: 3
+        },
+        output: [
+          {
+            low: 1,
+            high: 1,
+            count: 1
+          },
+          {
+            low: 2,
+            high: 2,
+            count: 1
+          },
+          {
+            low: 3,
+            high: 3,
+            count: 1
+          }
+        ]
+      }
+    ];
+
+    _.forEach(tests, test => {
+      const inputArray = test.inputs.array;
+      const inputBinCount = test.inputs.binCount;
+      const args = [inputArray, {binCount: inputBinCount}]
+
+      it('should create the correct bins', () => {
+        assert.deepEqual(bin(...args), test.output)
+      })
+    })
+  })
 
 });
