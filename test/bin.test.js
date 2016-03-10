@@ -45,6 +45,7 @@ describe('bin', () => {
   describe('the bins', () => {
     const tests = [
       {
+        desc: 'should put everything in one when binCount === 1',
         inputs: {
           array: [1,2,3],
           binCount: 1
@@ -58,6 +59,7 @@ describe('bin', () => {
         ]
       },
       {
+        desc: 'should be inclusive at the upper bound and exclusive at the lower bound',
         inputs: {
           array: [1,2,3],
           binCount: 2 
@@ -76,6 +78,7 @@ describe('bin', () => {
         ]
       },
       {
+        desc: 'should put every element in its own bin when bincount === array.length',
         inputs: {
           array: [1,2,3],
           binCount: 3
@@ -97,6 +100,30 @@ describe('bin', () => {
             count: 1
           }
         ]
+      },
+      {
+        desc: 'should increment the correct bin',
+        inputs: {
+          array: [1,1,2,3],
+          binCount: 3
+        },
+        output: [
+          {
+            low: 1,
+            high: 1,
+            count: 2
+          },
+          {
+            low: 2,
+            high: 2,
+            count: 1
+          },
+          {
+            low: 3,
+            high: 3,
+            count: 1
+          }
+        ]
       }
     ];
 
@@ -105,7 +132,7 @@ describe('bin', () => {
       const inputBinCount = test.inputs.binCount;
       const args = [inputArray, {binCount: inputBinCount}]
 
-      it('should create the correct bins', () => {
+      it(test.desc || 'should create the correct bins', () => {
         assert.deepEqual(bin(...args), test.output)
       })
     })
