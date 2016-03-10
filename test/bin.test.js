@@ -59,7 +59,7 @@ describe('bin', () => {
         ]
       },
       {
-        desc: 'should be inclusive at the upper bound and exclusive at the lower bound',
+        desc: 'should be inclusive at the upper bound and exclusive at the lower bound (except for the first bin)',
         inputs: {
           array: [1,2,3],
           binCount: 2 
