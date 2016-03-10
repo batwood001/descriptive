@@ -1,6 +1,9 @@
 import _ from 'lodash';
 
 export default (array, opts) => {
+  if (!_.isArray(array)) {
+    throw new Error('the first argument to \'bin\' must be an array');
+  }
   let {
     binCount = 10 // fix babel to default
   } = opts;
@@ -11,8 +14,8 @@ export default (array, opts) => {
   }
   const sorted = array.sort((a, b) => a - b);
   const length = sorted.length;
-  if (binCount > length) {
-    throw new Error('# of bins must be <= input array size')
+  if (!_.isInteger(binCount) || binCount < 1 || binCount > length) {
+    throw new Error('# of bins must be an integer <= input array size')
   }
   const min = sorted[0];
   const max = sorted[length - 1];
@@ -55,10 +58,10 @@ function createBins(bins, binSize, min) {
       };
     })
     // Prepend one bucket to capture min values
-    .unshift({
-      low: min - 1,
-      high: min,
-      count: 0
-    })
+    // .unshift({
+    //   low: min - 1,
+    //   high: min,
+    //   count: 0
+    // })
     .value();
 }
