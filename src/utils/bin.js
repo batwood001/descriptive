@@ -13,19 +13,16 @@ export default (array, opts) => {
   const length = sorted.length;
   const min = sorted[0];
   const max = sorted[length - 1];
-  if (binCount > length) {
-    throw new Error('# of bins must be <= input array size')
-  }
-  if (min === max && binCount > 1) {
-    throw new Error('Array should contains at least binCount types of elements ')
+  if (_.uniq(sorted).length < binCount) {
+    throw new Error('Array should contain at least binCount different elements ');
   }
   const binSize = (max - min) / binCount; // bin size change based on input data
   const bins = createBins(binCount, binSize, min)
-  const populated = populateBins(sorted, bins)
+  const populated = populateBins(sorted, bins, max)
   return populated;
 }
 
-function populateBins(array, bins) {
+function populateBins(array, bins, max) {
   return _.map(bins, bin => {
     const {
       low,
@@ -33,7 +30,7 @@ function populateBins(array, bins) {
     } = bin;
 
     bin.count = _.reduce(array, (count, el) => {
-      if (low <= el && el < high) {
+      if ((low <= el && el < high) || (high === max && el === max)) {
         return count + 1;
       }
       return count;
@@ -50,7 +47,7 @@ function createBins(binCount, binSize, min) {
       if (num === binCount - 1) {
         return {
           low: min + num * binSize,
-          high: min + (num + 1) * binSize + binSize / 10000000,
+          high: min + (num + 1) * binSize,
           count: 0
         };
       }

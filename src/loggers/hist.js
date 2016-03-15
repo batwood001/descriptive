@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import bin from '../utils/bin';
-const statisticUtil = require('../utils/statisticUtil').default();
+import {repeat} from './utils';
+import {generateTable} from './table';
 
 export default (array, opts) => {
   array = array.sort((a, b) => a - b);
@@ -16,21 +17,7 @@ export default (array, opts) => {
   for (let i = maxCount; i >= minCount - 1; i--) {
     console.log(generateRow(bins, i, maxCount, minCount, spacing));
   }
-  console.log(generateTable(array, spacing));
-}
-
-function generateTable(array, spacing) {
-  const measures = ['min', 'max', 'mean', 'median', "std"];
-  const maxWidth = 7;
-  return _.chain(measures)
-    .map(measure => {
-      const len = measure.length;
-      return `|${spacing}${measure}:${repeat(' ', maxWidth - len)} ${statisticUtil[measure](array).toFixed(2)}${spacing}|`;
-    })
-    .unshift(repeat(' _ ', maxWidth))
-    .push(repeat(' - ', maxWidth))
-    .value()
-    .join('\n');
+  generateTable(array, spacing);
 }
 
 function generateRow(bins, currentCount, maxCount, minCount, spacing) {
@@ -56,14 +43,6 @@ function generateXLabels(bins, spacing, yLabelColumnWidth, columnWidth) {
     const thisLabelWidth = countDigits(bin.high.toFixed(2));
     return `${str}${bin.high.toFixed(2)}${spacing}${repeat(' ', columnWidth - thisLabelWidth)}`;
   }, spacingFromLeft);
-}
-
-function repeat(char, count) {
-  return _.chain()
-    .range(count)
-    .map(() => char)
-    .value()
-    .join('');
 }
 
 function countDigits(num) {
