@@ -27,4 +27,4 @@ The easiest way to dig in is to run the only gulp task so far, `gulp hist`, whic
 
 So for instance:
 
-`gulp hist --array=[1,1,1] --binCount=2`
+`gulp hist --array=[1,2,2,3,1] --binCount=3`

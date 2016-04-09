@@ -1,24 +1,31 @@
 import _ from 'lodash';
 import bin from '../utils/bin';
+import {repeat} from './utils';
+import {generateTable} from './table';
 
 export default (array, opts) => {
+  array = array.sort((a, b) => a - b);
   const bins = bin(array, opts);
   const maxCount = _.reduce(bins, (max, bin) => {
     return bin.count > max ? bin.count : max
-  }, 0)
+  }, 0);
+  const minCount = _.reduce(bins, (min, bin) => {
+    return bin.count < min ? bin.count : min
+  }, Infinity);
 
   const spacing = repeat(' ', 3);
-  for (let i = maxCount; i > -1; i--) {
-    console.log(generateRow(bins, i, maxCount, spacing))
+  for (let i = maxCount; i >= minCount - 1; i--) {
+    console.log(generateRow(bins, i, maxCount, minCount, spacing));
   }
+  generateTable(array, spacing);
 }
 
-function generateRow(bins, currentCount, maxCount, spacing) {
+function generateRow(bins, currentCount, maxCount, minCount, spacing) {
   const yLabelColumnWidth = countDigits(maxCount);
   const yLabel = `${currentCount}${repeat(' ', yLabelColumnWidth - countDigits(currentCount))}`;
   const columnWidth = countDigits(_.last(bins).high.toFixed(2));
 
-  if (currentCount === 0) {
+  if (currentCount === minCount - 1) {
     return generateXLabels(bins, spacing, yLabelColumnWidth, columnWidth)
   } else {
     return _.reduce(bins, (str, bin) => {
@@ -36,14 +43,6 @@ function generateXLabels(bins, spacing, yLabelColumnWidth, columnWidth) {
     const thisLabelWidth = countDigits(bin.high.toFixed(2));
     return `${str}${bin.high.toFixed(2)}${spacing}${repeat(' ', columnWidth - thisLabelWidth)}`;
   }, spacingFromLeft);
-}
-
-function repeat(char, count) {
-  return _.chain()
-    .range(count)
-    .map(() => char)
-    .value()
-    .join('');
 }
 
 function countDigits(num) {
