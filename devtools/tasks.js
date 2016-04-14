@@ -1,4 +1,4 @@
-import hist from '../src/loggers/hist';
+import hist from '../dist/loggers/hist';
 
 export {
   hist
